@@ -68,7 +68,72 @@ Web3ProviderEngine.prototype.addProvider = function(source){
 }
 
 Web3ProviderEngine.prototype.send = function(payload){
-  throw new Error('Web3ProviderEngine does not support synchronous requests.')
+  // throw new Error('Web3ProviderEngine does not support synchronous requests.')
+
+  // support same methods as metamask does for compatibility
+  const self = this
+  // let selectedAddress
+  let result = null
+  switch (payload.method) {
+
+    case 'eth_accounts':
+      // read from localStorage
+      // selectedAddress = self.publicConfigStore.getState().selectedAddress
+      // result = selectedAddress ? [selectedAddress] : []
+      // break
+      self.sendAsync(payload, function (err, accounts) {
+        if (err) return console.error(err)
+        result = accounts
+      })
+
+      while (result === null); // this is a horrible hack.  never do this.
+      break
+
+    case 'eth_coinbase':
+      // read from localStorage
+      // selectedAddress = self.publicConfigStore.getState().selectedAddress
+      // result = selectedAddress || null
+      // break
+      self.sendAsync(payload, function (err, accounts) {
+        if (err) return console.error(err)
+        result = accounts
+      })
+
+      while (result === null); // this is a horrible hack.  never do this.
+      break
+
+    case 'eth_uninstallFilter':
+      self.sendAsync(payload, function () {})
+      result = true
+      break
+
+    case 'net_version':
+      // const networkVersion = self.publicConfigStore.getState().networkVersion
+      // result = networkVersion || null
+      // break
+
+      self.sendAsync(payload, function (err, networkVersion) {
+        if (err) return console.error(err)
+        result = networkVersion || null
+      })
+
+      while (result === null); // this is a horrible hack.  never do this.
+      break
+
+    // throw not-supported Error
+    default:
+      var link = 'https://github.com/MetaMask/faq/blob/master/DEVELOPERS.md#dizzy-all-async---think-of-metamask-as-a-light-client'
+      var message = `The MetaMask Web3 object does not support synchronous methods like ${payload.method} without a callback parameter. See ${link} for details.`
+      throw new Error(message)
+
+  }
+
+  // return the result
+  return {
+    id: payload.id,
+    jsonrpc: payload.jsonrpc,
+    result: result,
+  }
 }
 
 Web3ProviderEngine.prototype.sendAsync = function(payload, cb){
