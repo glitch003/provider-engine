@@ -88,7 +88,10 @@ Web3ProviderEngine.prototype.send = function(payload){
         result = accounts
       })
 
-      while (result === null); // this is a horrible hack.  never do this.
+      while (result === null) { // this is a horrible hack.  never do this.
+        let a = Math.random()
+        console.log(a)
+      }
       break
 
     case 'eth_coinbase':
