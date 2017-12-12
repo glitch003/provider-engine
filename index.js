@@ -82,7 +82,7 @@ Web3ProviderEngine.prototype.send = function(payload){
       // selectedAddress = self.publicConfigStore.getState().selectedAddress
       // result = selectedAddress ? [selectedAddress] : []
       // break
-      selectedAddress = window.web3MobileSelectedAddress
+      selectedAddress = window.web3Mobile.selectedAddress
       result = selectedAddress ? [selectedAddress] : []
 
       break

@@ -74,7 +74,7 @@ Web3ProviderEngine.prototype.send = function(payload){
 
   // support same methods as metamask does for compatibility
   const self = this
-  // let selectedAddress
+  let selectedAddress
   let result = null
   switch (payload.method) {
 
@@ -83,15 +83,9 @@ Web3ProviderEngine.prototype.send = function(payload){
       // selectedAddress = self.publicConfigStore.getState().selectedAddress
       // result = selectedAddress ? [selectedAddress] : []
       // break
-      self.sendAsync(payload, function (err, accounts) {
-        if (err) return console.error(err)
-        result = accounts
-      })
+      selectedAddress = window.web3Mobile.selectedAddress
+      result = selectedAddress ? [selectedAddress] : []
 
-      while (result === null) { // this is a horrible hack.  never do this.
-        let a = Math.random()
-        console.log(a)
-      }
       break
 
     case 'eth_coinbase':
@@ -99,12 +93,8 @@ Web3ProviderEngine.prototype.send = function(payload){
       // selectedAddress = self.publicConfigStore.getState().selectedAddress
       // result = selectedAddress || null
       // break
-      self.sendAsync(payload, function (err, accounts) {
-        if (err) return console.error(err)
-        result = accounts
-      })
-
-      while (result === null); // this is a horrible hack.  never do this.
+      selectedAddress = window.web3Mobile.selectedAddress
+      result = selectedAddress ? [selectedAddress] : []
       break
 
     case 'eth_uninstallFilter':
@@ -116,13 +106,7 @@ Web3ProviderEngine.prototype.send = function(payload){
       // const networkVersion = self.publicConfigStore.getState().networkVersion
       // result = networkVersion || null
       // break
-
-      self.sendAsync(payload, function (err, networkVersion) {
-        if (err) return console.error(err)
-        result = networkVersion || null
-      })
-
-      while (result === null); // this is a horrible hack.  never do this.
+      result = window.web3Mobile.networkVersion || null
       break
 
     // throw not-supported Error
