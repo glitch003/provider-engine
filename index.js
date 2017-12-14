@@ -69,7 +69,7 @@ Web3ProviderEngine.prototype.addProvider = function(source){
 
 Web3ProviderEngine.prototype.send = function(payload){
   // throw new Error('Web3ProviderEngine does not support synchronous requests.')
-  console.log('web3 send payload: ' + JSON.stringify(payload))
+  // console.log('web3 send payload: ' + JSON.stringify(payload))
 
   // support same methods as metamask does for compatibility
   const self = this
@@ -125,7 +125,7 @@ Web3ProviderEngine.prototype.send = function(payload){
 }
 
 Web3ProviderEngine.prototype.sendAsync = function(payload, cb){
-  console.log('web3 sendAsync payload: ' + JSON.stringify(payload))
+  // console.log('web3 sendAsync payload: ' + JSON.stringify(payload))
 
   const self = this
   self._ready.await(function(){
